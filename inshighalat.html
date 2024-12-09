@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج الشكاوى - بئر العاتر</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+        }
+        .header {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-align: right;
+            font-size: 24px;
+        }
+        .login-btn {
+            background-color: #007bff;
+            padding: 8px 15px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #28a745;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .file-input {
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- رأس الصفحة -->
+<div class="header">
+    <div>مرحبًا مواطني بئر العاتر</div>
+    <button class="login-btn" onclick="showLogin()">دخول المسير</button>
+</div>
+
+<!-- نموذج الشكاوى -->
+<div class="container">
+    <h2>تقديم انشغال</h2>
+    <form id="complaintForm">
+        <label for="name">الاسم و اللقب<span style="color:red;">*</span></label>
+        <input type="text" id="name" required>
+
+        <label for="phone">رقم الهاتف للإتصال بك (اختياري)</label>
+        <input type="text" id="phone">
+
+        <label for="district">اختر الحي</label>
+        <select id="district" required>
+            <option value="">اختر حي</option>
+            <option value="حي العتيق">العتيق</option>
+            <option value="حي الكاهنة">الكاهنة</option>
+            <option value="حي الجديد الجيني">الجديد الجيني</option>
+            <option value="حي العمراني">العمراني</option>
+            <option value="حي المطار">المطار</option>
+            <option value="حي السعادة">السعادة</option>
+            <option value="حي الهناء">الهناء</option>
+            <option value="حي العامرية">العامرية</option>
+            <option value="حي الدائرة">الدائرة</option>
+            <option value="حي البلدية">البلدية</option>
+            <option value="حي الشهداء">الشهداء</option>
+            <option value="حي الحرية">الحرية</option>
+            <option value="حي النبكة">النبكة</option>
+            <option value="حي الجبل">الجبل</option>
+            <option value="حي التحصيصات">التحصيصات</option>
+            <option value="حي الزاوية">الزاوية</option>
+        </select>
+
+        <label for="category">حدد تخصص الانشغال</label>
+        <select id="category" required>
+            <option value="">اختر تخصص</option>
+            <option value="الصحة العامة">الصحة العامة</option>
+            <option value="تهيئة وطرقات">تهيئة وطرقات</option>
+            <option value="تسربات وتزود بالمياه والغاز والكهرباء">تسربات وتزود بالمياه والغاز والكهرباء</option>
+            <option value="كلاب متشردة وخطر وبائي">كلاب متشردة وخطر وبائي</option>
+            <option value="تلوث">تلوث</option>
+            <option value="تعدي على الأملاك العامة">تعدي على الأملاك العامة</option>
+            <option value="حيازة ملك عام">حيازة ملك عام</option>
+            <option value="بناء فوضوي غير مرخص">بناء فوضوي غير مرخص</option>
+            <option value="أخرى">أخرى</option>
+        </select>
+
+        <label for="description">وصف الانشغال</label>
+        <textarea id="description" rows="4" required></textarea>
+
+        <label for="image">إرفاق صورة (اختياري)</label>
+        <input type="file" id="image" class="file-input" accept="image/*">
+
+        <button type="submit">إرسال</button>
+    </form>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+<script>
+    // تهيئة Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyBe_34aai5hzDLBwdZrbAVvHMY7xJSYZlE",
+        authDomain: "inshighalat.firebaseapp.com",
+        projectId: "inshighalat",
+        storageBucket: "inshighalat.firebasestorage.app",
+        messagingSenderId: "377475393590",
+        appId: "1:377475393590:web:23a2783e423bc73bc49097",
+        measurementId: "G-9FE446EB91"
+    };
+
+    // تهيئة التطبيق Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+
+    // تهيئة قاعدة البيانات
+    const database = firebase.database(app);
+
+    // إرسال البيانات إلى Firebase عند إرسال النموذج
+    document.getElementById('complaintForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // جمع البيانات من النموذج
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const district = document.getElementById('district').value;
+        const category = document.getElementById('category').value;
+        const description = document.getElementById('description').value;
+        const image = document.getElementById('image').files[0];  // الصورة المرفقة (إذا كانت موجودة)
+
+        // تحديد مكان التخزين في قاعدة البيانات
+        const complaintsRef = database.ref('complaints');
+
+        // إدخال البيانات إلى قاعدة البيانات
+        complaintsRef.push({
+            name: name,
+            phone: phone,
+            district: district,
+            category: category,
+            description: description,
+            image: image ? image.name : null  // إذا كانت الصورة مرفقة
+        }).then(() => {
+            alert('تم إرسال الانشغال بنجاح! شكرا');
+        }).catch(error => {
+            console.error('حدث خطأ: ', error);
+        });
+    });
+
+    function showLogin() {
+        alert("فتح نافذة تسجيل الدخول");
+    }
+</script>
+
+</body>
+</html>
