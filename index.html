@@ -135,58 +135,52 @@
     </form>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+<!-- إضافة سكربت Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.1.1/firebase-database.js"></script>
 
-<script>
+<script>// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBe_34aai5hzDLBwdZrbAVvHMY7xJSYZlE",
+  authDomain: "inshighalat.firebaseapp.com",
+  projectId: "inshighalat",
+  storageBucket: "inshighalat.firebasestorage.app",
+  messagingSenderId: "377475393590",
+  appId: "1:377475393590:web:23a2783e423bc73bc49097",
+  measurementId: "G-9FE446EB91"
+};
+
     // تهيئة Firebase
-    const firebaseConfig = {
-        apiKey: "AIzaSyBe_34aai5hzDLBwdZrbAVvHMY7xJSYZlE",
-        authDomain: "inshighalat.firebaseapp.com",
-        projectId: "inshighalat",
-        storageBucket: "inshighalat.firebasestorage.app",
-        messagingSenderId: "377475393590",
-        appId: "1:377475393590:web:23a2783e423bc73bc49097",
-        measurementId: "G-9FE446EB91"
-    };
-
-    // تهيئة التطبيق Firebase
     const app = firebase.initializeApp(firebaseConfig);
-
-    // تهيئة قاعدة البيانات
     const database = firebase.database(app);
 
-    // إرسال البيانات إلى Firebase عند إرسال النموذج
+    // التعامل مع نموذج إرسال الشكاوى
     document.getElementById('complaintForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // جمع البيانات من النموذج
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
         const district = document.getElementById('district').value;
         const category = document.getElementById('category').value;
         const description = document.getElementById('description').value;
-        const image = document.getElementById('image').files[0];  // الصورة المرفقة (إذا كانت موجودة)
+        const image = document.getElementById('image').files[0];
 
-        // تحديد مكان التخزين في قاعدة البيانات
-        const complaintsRef = database.ref('complaints');
-
-        // إدخال البيانات إلى قاعدة البيانات
-        complaintsRef.push({
+        // حفظ البيانات في قاعدة البيانات
+        const newComplaintRef = database.ref('complaints').push();
+        newComplaintRef.set({
             name: name,
             phone: phone,
             district: district,
             category: category,
             description: description,
-            image: image ? image.name : null  // إذا كانت الصورة مرفقة
-        }).then(() => {
-            alert('تم إرسال الانشغال بنجاح! شكرا');
-        }).catch(error => {
-            console.error('حدث خطأ: ', error);
+            image: image ? image.name : null
         });
+
+        alert('تم إرسال الانشغال بنجاح! شكرا');
     });
 
     function showLogin() {
+        // هنا يمكن إضافة كود لفتح نافذة تسجيل الدخول الخاصة بالمسير أو الرئيس
         alert("فتح نافذة تسجيل الدخول");
     }
 </script>
